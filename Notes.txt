@@ -1,0 +1,25 @@
+- Payment Gateway API
+ - Payment Endpoint
+	- Get
+		- Get by PaymentId, - Shows Masked Card Number, Card details along with Status code
+	- Post - 200 / 400 / ...
+		- Card Number, Expiry Month / year, Amount, Currency and CVV
+		
+		Bank : Process payment - (PaymentId)returns unique Id (GUID), Status(200/ error)
+		
+		
+		- Swagger, TODOs, etc. - 
+		
+		
+		Logging,
+		Metrics, - Promethius (https://devblogs.microsoft.com/aspnet/observability-asp-net-core-apps/)
+		Docker file,
+		Authentication,
+		API Client for Merchant,
+		gitLab CI,
+		Performance Testing
+		Encryption - Card encryption,
+		Data Storage,
+		Suggestion : Payments Service can be made Event Driven to process payments offline...Gives scalability
+		
+		
