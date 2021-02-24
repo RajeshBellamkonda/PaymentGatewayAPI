@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 namespace IdentityServer
 {
+    // TODO: Mapp this config from App Settings.
     public static class Config
     {
         public static IEnumerable<IdentityResource> IdentityResources =>
@@ -30,6 +31,7 @@ namespace IdentityServer
                     ClientId ="PaymentGatewayAPI",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets = {
+                        //TODO: use encrypted secret from AppSettings or grab it from Passwords Manager
                         new Secret("DF84B468-31FB-493C-A56A-A69C34ED80CE".Sha256())
                     },
                     AllowedScopes =

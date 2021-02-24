@@ -1,10 +1,10 @@
-﻿namespace PaymentGateway.API.Models
+﻿namespace PaymentGateway.Services.DTOs
 {
-    public class Payment
+    public class PaymentDto
     {
         public string Id { get; set; }
         public string CardNumber { get; set; }
-        public CardType CardType { get; set; }
+        public CardTypeDto CardType { get; set; }
         public string CardHolderName { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
