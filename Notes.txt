@@ -20,6 +20,9 @@
 		Performance Testing
 		Encryption - Card encryption,
 		Data Storage,
-		Suggestion : Payments Service can be made Event Driven to process payments offline...Gives scalability
+		Suggestion : 
+		Payments Service can be made Event Driven to process payments offline...Gives scalability
+		Logging -  we can extend the logging to have traceIds etc to track through the system.
 		
 		
+		TODOs: Add xml comments

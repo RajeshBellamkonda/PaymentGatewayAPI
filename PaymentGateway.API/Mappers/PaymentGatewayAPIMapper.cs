@@ -8,8 +8,8 @@ namespace PaymentGateway.API.Mappers
     {
         public PaymentGatewayAPIMapper()
         {
-            CreateMap<PaymentVm, PaymentDto>();
-            CreateMap<PaymentDto, PaymentVm>();
+            CreateMap<PaymentRequestVm, PaymentDto>();
+            CreateMap<PaymentDto, PaymentSummaryVm>();
             CreateMap<CardTypeVm, CardTypeDto>();
             CreateMap<CardTypeDto, CardTypeVm>();
         }

@@ -1,9 +1,9 @@
-﻿namespace PaymentGateway.Services.DTOs
+﻿namespace PaymentGateway.API.ViewModels
 {
     /// <summary>
-    /// The Data Transfer Object used internally.
+    /// Payment details View Model
     /// </summary>
-    public class PaymentDto
+    public class PaymentSummaryVm
     {
         /// <summary>
         /// Unique Identifier for the payment.
@@ -13,17 +13,12 @@
         /// <summary>
         /// Card number masked for security.
         /// </summary>
-        public string MaskedCardNumber => $"XXXX-XXXX-XXXX-{CardNumber.Substring(15, 4)}";
-
-        /// <summary>
-        /// 16 digit card number. Expected Format : XXXX-XXXX-XXXX-XXXX
-        /// </summary>
-        public string CardNumber { get; set; }
+        public string MaskedCardNumber { get; set; }
 
         /// <summary>
         /// Tyep of the Card. Ex: Master, Visa, Amex.
         /// </summary>
-        public CardTypeDto CardType { get; set; }
+        public CardTypeVm CardType { get; set; }
 
         /// <summary>
         /// Name of the card holder.

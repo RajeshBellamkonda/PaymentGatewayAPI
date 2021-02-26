@@ -1,38 +1,36 @@
-﻿namespace PaymentGateway.Services.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PaymentGateway.API.ViewModels
 {
     /// <summary>
-    /// The Data Transfer Object used internally.
+    /// Payment Request View Model
     /// </summary>
-    public class PaymentDto
+    public class PaymentRequestVm
     {
         /// <summary>
-        /// Unique Identifier for the payment.
+        /// Tyep of the Card. Ex: Master, Visa, Amex.
         /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Card number masked for security.
-        /// </summary>
-        public string MaskedCardNumber => $"XXXX-XXXX-XXXX-{CardNumber.Substring(15, 4)}";
+        [Required]
+        [EnumDataType(typeof(CardTypeVm))]
+        public CardTypeVm CardType { get; set; }
 
         /// <summary>
         /// 16 digit card number. Expected Format : XXXX-XXXX-XXXX-XXXX
         /// </summary>
+        [Required]
+        [StringLength(19)]
         public string CardNumber { get; set; }
-
-        /// <summary>
-        /// Tyep of the Card. Ex: Master, Visa, Amex.
-        /// </summary>
-        public CardTypeDto CardType { get; set; }
 
         /// <summary>
         /// Name of the card holder.
         /// </summary>
+        [Required]
         public string CardHolderName { get; set; }
 
         /// <summary>
         /// 1st Line of the Address.
         /// </summary>
+        [Required]
         public string Address1 { get; set; }
 
         /// <summary>
@@ -43,41 +41,53 @@
         /// <summary>
         /// City of the Address.
         /// </summary>
+        [Required]
         public string City { get; set; }
 
         /// <summary>
         /// Post Code of the address.
         /// </summary>
+        [Required]
         public string PostCode { get; set; }
 
         /// <summary>
         /// Country of the card address.
         /// </summary>
+        [Required]
         public string Country { get; set; }
 
         /// <summary>
         /// Month of Card Expiry.
         /// </summary>
+        [Required]
+        [Range(1, 12)]
         public int ExpiryMonth { get; set; }
 
         /// <summary>
         /// Year of Card Expiry.
         /// </summary>
+        [Required]
+        [Range(2020, 2025)]
         public int ExpiryYear { get; set; }
 
         /// <summary>
         /// Payment Amount.
         /// </summary>
+        [Required]
+        [Range(1, 10000)]
         public int Amount { get; set; }
 
         /// <summary>
         /// Payment Currency.
         /// </summary>
+        [Required]
         public string Currency { get; set; }
 
         /// <summary>
         /// Card Verification Value (CVV)
         /// </summary>
+        [Required]
+        [Range(001, 999)]
         public int Cvv { get; set; }
 
         /// <summary>
