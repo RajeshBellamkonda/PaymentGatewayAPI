@@ -1,11 +1,11 @@
-﻿using PaymentGateway.Services.DTOs;
+﻿using PaymentGateway.Models;
 using System.Threading.Tasks;
 
 namespace PaymentGateway.Services
 {
     public interface IPaymentService
     {
-        PaymentDto GetPaymentDetailsById(string id);
-        Task<PaymentDto> SubmitPayment(PaymentDto payment);
+        Task<Payment> GetPaymentDetailsById(string id);
+        Task<Payment> ProcessPayment(Payment payment);
     }
 }

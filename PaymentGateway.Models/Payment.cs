@@ -1,9 +1,9 @@
-﻿namespace PaymentGateway.Services.DTOs
+﻿namespace PaymentGateway.Models
 {
     /// <summary>
-    /// The Data Transfer Object used internally.
+    /// The domain object for Payment
     /// </summary>
-    public class PaymentDto
+    public class Payment
     {
         /// <summary>
         /// Unique Identifier for the payment.
@@ -23,7 +23,7 @@
         /// <summary>
         /// Tyep of the Card. Ex: Master, Visa, Amex.
         /// </summary>
-        public CardTypeDto CardType { get; set; }
+        public CardType CardType { get; set; }
 
         /// <summary>
         /// Name of the card holder.

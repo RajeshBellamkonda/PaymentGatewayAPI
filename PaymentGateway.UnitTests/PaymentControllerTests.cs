@@ -6,8 +6,8 @@ using NUnit.Framework;
 using PaymentGateway.API.Controllers;
 using PaymentGateway.API.Mappers;
 using PaymentGateway.API.ViewModels;
+using PaymentGateway.Models;
 using PaymentGateway.Services;
-using PaymentGateway.Services.DTOs;
 using System;
 using System.Threading.Tasks;
 
@@ -16,43 +16,43 @@ namespace PaymentGateway.UnitTests
     [TestFixture]
     public class PaymentControllerTests
     {
-        private Mock<IPaymentService> _paymentService;
         private IMapper _mapper;
+        private Mock<IPaymentService> _paymentServiceMock;
         private PaymentController _paymentController;
 
         class ControllerTestMapper : Profile
         {
             public ControllerTestMapper()
             {
-                CreateMap<PaymentDto, PaymentRequestVm>();
+                CreateMap<Payment, PaymentRequestVm>();
             }
         }
 
         [SetUp]
         public void Setup()
         {
-            _paymentService = new Mock<IPaymentService>();
+            _paymentServiceMock = new Mock<IPaymentService>();
             var mappingConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfiles(new Profile[] { new PaymentGatewayAPIMapper(), new ControllerTestMapper() });
 
             });
             _mapper = mappingConfig.CreateMapper();
-            _paymentController = new PaymentController(new Mock<ILogger<PaymentController>>().Object, _paymentService.Object, _mapper);
+            _paymentController = new PaymentController(new Mock<ILogger<PaymentController>>().Object, _paymentServiceMock.Object, _mapper);
         }
 
         [Test]
-        public void GetById_SuccessResponse_ForValidId()
+        public async Task GetById_SuccessResponse_ForValidId()
         {
             // Arrange
             var id = Guid.NewGuid().ToString();
-            var _testPaymentDto = GetTestPaymentDtoWithId(id);
-            _paymentService.Setup(ps => ps.GetPaymentDetailsById(It.Is<string>(x => x.Equals(id, StringComparison.InvariantCultureIgnoreCase))))
-                .Returns(_testPaymentDto)
+            var _testPayment = GetTestPaymentWithId(id);
+            _paymentServiceMock.Setup(ps => ps.GetPaymentDetailsById(It.Is<string>(x => x.Equals(id, StringComparison.InvariantCultureIgnoreCase))))
+                .ReturnsAsync(_testPayment)
                 .Verifiable();
 
             // Act
-            var response = _paymentController.Get(id);
+            var response = await _paymentController.Get(id);
 
             // Assert
             Assert.IsNotNull(response,"Expected response from the API");
@@ -61,21 +61,21 @@ namespace PaymentGateway.UnitTests
             Assert.AreEqual(200, result.StatusCode);
             var paymentSummary = result.Value as PaymentSummaryVm;
             Assert.IsNotNull(paymentSummary,"Payment Summary expected");
-            Assert.AreEqual(_testPaymentDto.Id, paymentSummary.Id, "Id should match");
-            Assert.AreEqual($"XXXX-XXXX-XXXX-{_testPaymentDto.CardNumber.Substring(15, 4)}", paymentSummary.MaskedCardNumber, "Masked CardNumber should match");
-            _paymentService.Verify();
+            Assert.AreEqual(_testPayment.Id, paymentSummary.Id, "Id should match");
+            Assert.AreEqual($"XXXX-XXXX-XXXX-{_testPayment.CardNumber.Substring(15, 4)}", paymentSummary.MaskedCardNumber, "Masked CardNumber should match");
+            _paymentServiceMock.Verify();
         }
 
         [Test]
-        public void GetById_NotFoundResponse_ForInValidId()
+        public async Task GetById_NotFoundResponse_ForInValidId()
         {
             // Arrange
             var id = "Invalid_Id";
-            _paymentService.Setup(ps => ps.GetPaymentDetailsById(It.Is<string>(x => x.Equals(id, StringComparison.InvariantCultureIgnoreCase))))
-                .Returns(default(PaymentDto));
+            _paymentServiceMock.Setup(ps => ps.GetPaymentDetailsById(It.Is<string>(x => x.Equals(id, StringComparison.InvariantCultureIgnoreCase))))
+                .ReturnsAsync(default(Payment));
 
             // Act
-            var response = _paymentController.Get(id);
+            var response = await _paymentController.Get(id);
 
             // Assert
             Assert.IsNotNull(response, "Expected response from the API");
@@ -91,11 +91,11 @@ namespace PaymentGateway.UnitTests
         {
             // Arrange
             var id = Guid.NewGuid().ToString();
-            var paymentDTO = this.GetTestPaymentDtoWithId(id);
-            var paymentRequestVm = _mapper.Map<PaymentRequestVm>(paymentDTO);
+            var Payment = this.GetTestPaymentWithId(id);
+            var paymentRequestVm = _mapper.Map<PaymentRequestVm>(Payment);
 
-            _paymentService.Setup(ps => ps.SubmitPayment(It.IsAny<PaymentDto>()))
-                .ReturnsAsync(paymentDTO).Verifiable();
+            _paymentServiceMock.Setup(ps => ps.ProcessPayment(It.IsAny<Payment>()))
+                .ReturnsAsync(Payment).Verifiable();
 
             // Act
             var response = await _paymentController.Post(paymentRequestVm);
@@ -109,7 +109,7 @@ namespace PaymentGateway.UnitTests
             Assert.IsNotNull(paymentSummary, "Payment Summary expected");
             Assert.IsNotNull(paymentSummary.Id,"Unique Id expected");
             Assert.IsNotNull(paymentSummary.Status,"Payment status expected");
-            _paymentService.Verify();
+            _paymentServiceMock.Verify();
         }
 
 
@@ -118,8 +118,8 @@ namespace PaymentGateway.UnitTests
         {
             // Arrange
             var id = Guid.NewGuid().ToString();
-            var paymentDTO = this.GetTestPaymentDtoWithId(id);
-            var paymentRequestVm = _mapper.Map<PaymentRequestVm>(paymentDTO);
+            var Payment = this.GetTestPaymentWithId(id);
+            var paymentRequestVm = _mapper.Map<PaymentRequestVm>(Payment);
             paymentRequestVm.CardNumber = null;
             _paymentController.ModelState.AddModelError("CardNumber", "Invalid Card Number");
             
@@ -134,17 +134,17 @@ namespace PaymentGateway.UnitTests
             var paymentSummary = result.Value as PaymentSummaryVm;
             Assert.IsNull(paymentSummary,"PaymentSummary should be null");
 
-            _paymentService.Verify(ps => ps.SubmitPayment(It.IsAny<PaymentDto>()), Times.Never);
+            _paymentServiceMock.Verify(ps => ps.ProcessPayment(It.IsAny<Payment>()), Times.Never);
         }
 
-        private PaymentDto GetTestPaymentDtoWithId(string id)
+        private Payment GetTestPaymentWithId(string id)
         {
-            return new PaymentDto
+            return new Payment
             {
                 Id = id,
                 CardNumber = "1234-5678-9012-3456",
                 CardHolderName = "John Smith",
-                CardType = CardTypeDto.Master,
+                CardType = CardType.Master,
                 Cvv = 123,
                 Status = "Success",
                 Amount = 123,

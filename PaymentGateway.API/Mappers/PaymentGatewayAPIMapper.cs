@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PaymentGateway.API.ViewModels;
-using PaymentGateway.Services.DTOs;
+using PaymentGateway.Models;
 
 namespace PaymentGateway.API.Mappers
 {
@@ -8,10 +8,8 @@ namespace PaymentGateway.API.Mappers
     {
         public PaymentGatewayAPIMapper()
         {
-            CreateMap<PaymentRequestVm, PaymentDto>();
-            CreateMap<PaymentDto, PaymentSummaryVm>();
-            CreateMap<CardTypeVm, CardTypeDto>();
-            CreateMap<CardTypeDto, CardTypeVm>();
+            CreateMap<PaymentRequestVm, Payment>();
+            CreateMap<Payment, PaymentSummaryVm>();
         }
 
     }

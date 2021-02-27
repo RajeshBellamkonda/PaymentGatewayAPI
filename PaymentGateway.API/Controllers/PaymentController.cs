@@ -4,11 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PaymentGateway.API.ViewModels;
+using PaymentGateway.Models;
 using PaymentGateway.Services;
-using PaymentGateway.Services.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -42,19 +39,19 @@ namespace PaymentGateway.API.Controllers
         /// <response code="200">Returns payment summary for the requested id.</response>
         /// <response code="404">If the payment details are not found.</response>    
         [HttpGet("{id}")]
-        public IActionResult Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
             _logger.LogDebug($"Get requested with id {id}");
-            var paymentDetails = _paymentService.GetPaymentDetailsById(id);
-            if (paymentDetails == null)
+            var payment = await _paymentService.GetPaymentDetailsById(id);
+            if (payment == null)
             {
                 var message = $"Requested payment details with Id {id} is not found";
                 _logger.LogDebug(message);
                 return NotFound(message);
             }
-            var paymentVm = _mapper.Map<PaymentSummaryVm>(paymentDetails);
-            _logger.LogDebug($"Requested payment details with id {id} : {JsonConvert.SerializeObject(paymentVm)}");
-            return Ok(paymentVm);
+            var paymentSummaryVm = _mapper.Map<PaymentSummaryVm>(payment);
+            _logger.LogDebug($"Successfully retrieved payment details with id {id}");
+            return Ok(paymentSummaryVm);
         }
 
         // POST api/<Payment>
@@ -69,15 +66,16 @@ namespace PaymentGateway.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PaymentRequestVm paymentRequest)
         {
-            _logger.LogDebug($"Requested payment with details: {JsonConvert.SerializeObject(paymentRequest)}");
             if (!ModelState.IsValid)
             {
                 _logger.LogDebug($"Bad Request: {JsonConvert.SerializeObject(ModelState)}");
                 return BadRequest(ModelState);
             }
-            var paymentDto = await _paymentService.SubmitPayment(_mapper.Map<PaymentDto>(paymentRequest));
+            var payment = _mapper.Map<Payment>(paymentRequest);
+            _logger.LogDebug($"Submitting Payment request for : {payment.MaskedCardNumber}");
+            var paymentDto = await _paymentService.ProcessPayment(payment);
             var paymentSummaryVm = _mapper.Map<PaymentSummaryVm>(paymentDto);
-            _logger.LogDebug($"Processed Payment: {JsonConvert.SerializeObject(paymentSummaryVm)}");
+            _logger.LogDebug($"Processed Payment for : {paymentSummaryVm.MaskedCardNumber}");
             return base.Ok(paymentSummaryVm);
         }
     }

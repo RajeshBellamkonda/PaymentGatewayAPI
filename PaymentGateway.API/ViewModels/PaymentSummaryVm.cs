@@ -1,4 +1,6 @@
-﻿namespace PaymentGateway.API.ViewModels
+﻿using PaymentGateway.Models;
+
+namespace PaymentGateway.API.ViewModels
 {
     /// <summary>
     /// Payment details View Model
@@ -18,7 +20,7 @@
         /// <summary>
         /// Tyep of the Card. Ex: Master, Visa, Amex.
         /// </summary>
-        public CardTypeVm CardType { get; set; }
+        public CardType CardType { get; set; }
 
         /// <summary>
         /// Name of the card holder.

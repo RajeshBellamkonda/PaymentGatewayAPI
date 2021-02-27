@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PaymentGateway.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace PaymentGateway.API.ViewModels
 {
@@ -11,8 +12,8 @@ namespace PaymentGateway.API.ViewModels
         /// Tyep of the Card. Ex: Master, Visa, Amex.
         /// </summary>
         [Required]
-        [EnumDataType(typeof(CardTypeVm))]
-        public CardTypeVm CardType { get; set; }
+        [EnumDataType(typeof(CardType))]
+        public CardType CardType { get; set; }
 
         /// <summary>
         /// 16 digit card number. Expected Format : XXXX-XXXX-XXXX-XXXX

@@ -4,4 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PaymentGateway.ExternalAccess\PaymentGateway.ExternalAccess.csproj" />
+    <ProjectReference Include="..\PaymentGateway.Models\PaymentGateway.Models.csproj" />
+    <ProjectReference Include="..\PaymentGateway.Repositories\PaymentGateway.Repositories.csproj" />
+  </ItemGroup>
+
 </Project>
