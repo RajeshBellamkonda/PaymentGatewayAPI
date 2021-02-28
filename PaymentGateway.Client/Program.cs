@@ -1,5 +1,10 @@
 ﻿using IdentityModel.Client;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PaymentGateway.Client.Configuration;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,7 +13,35 @@ namespace PaymentGateway.Client
 {
     public class Program
     {
+        static IConfiguration Configuration => new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        static IHostBuilder CreateHostBuilder(string[] args) =>
+           Host.CreateDefaultBuilder(args)
+               .ConfigureServices((_, services) =>
+                   {
+                       var paymentGatewayConfig = new PaymentGatewayConfiguration();
+                       Configuration.GetSection("PaymentGateway").Bind(paymentGatewayConfig);
+                       services.AddTransient<IPaymentGatewayClient, PaymentGatewayClient>();
+                       services.AddSingleton<IPaymentGatewayConfiguration>(paymentGatewayConfig);
+                   });
+
         public static async Task Main(string[] args)
+        {
+            using IHost host = CreateHostBuilder(args).Build();
+            using IServiceScope serviceScope = host.Services.CreateScope();
+            IServiceProvider provider = serviceScope.ServiceProvider;
+            var paymentClient = provider.GetRequiredService<IPaymentGatewayClient>();
+
+            // Application code should start here.
+            var paymentId = Guid.NewGuid().ToString();
+            var paymentSummary = await paymentClient.GetPaymentDetails(paymentId);
+            Console.WriteLine($"Successfully Retrieved Payment for Id : {paymentId}");
+            Console.WriteLine(JsonConvert.SerializeObject(paymentSummary, Formatting.Indented));
+            Console.ReadLine();
+        }
+        public static async Task Main1(string[] args)
         {
             var client = new HttpClient();
             var disco = await client.GetDiscoveryDocumentAsync("https://localhost:5001");

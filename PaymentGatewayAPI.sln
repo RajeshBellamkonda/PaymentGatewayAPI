@@ -23,6 +23,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaymentGateway.ExternalAcce
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Models", "PaymentGateway.Models\PaymentGateway.Models.csproj", "{B046F0B5-C082-4AC6-A9BA-DE8AA6AF2E12}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MockBankAPI", "MockBankAPI", "{3917DAF0-0045-47D4-92EB-B32C73929CE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bank.API", "Bank.API\Bank.API.csproj", "{6CD1F540-4EAE-4E56-9ED8-47E0CFA35653}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PaymentGatewayClient", "PaymentGatewayClient", "{8D08CE85-57E4-4EE3-82AC-35F03A9075E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,13 +71,19 @@ Global
 		{B046F0B5-C082-4AC6-A9BA-DE8AA6AF2E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B046F0B5-C082-4AC6-A9BA-DE8AA6AF2E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B046F0B5-C082-4AC6-A9BA-DE8AA6AF2E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CD1F540-4EAE-4E56-9ED8-47E0CFA35653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CD1F540-4EAE-4E56-9ED8-47E0CFA35653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CD1F540-4EAE-4E56-9ED8-47E0CFA35653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CD1F540-4EAE-4E56-9ED8-47E0CFA35653}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{8BF60FB8-CD3E-4199-8A8D-B0B74075A83F} = {8D08CE85-57E4-4EE3-82AC-35F03A9075E9}
 		{7597DFEE-7E68-4414-A08D-14C2EBB39596} = {4FADA20D-C42E-4504-B630-9CBADC4127C1}
 		{D5B0BA0D-B580-44F1-9E28-59F3A0164919} = {4FADA20D-C42E-4504-B630-9CBADC4127C1}
+		{6CD1F540-4EAE-4E56-9ED8-47E0CFA35653} = {3917DAF0-0045-47D4-92EB-B32C73929CE0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AD74C52C-191C-4C33-BE50-057BE80935D1}

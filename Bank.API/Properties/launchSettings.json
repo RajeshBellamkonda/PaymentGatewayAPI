@@ -1,37 +1,30 @@
-{
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:7701",
-      "sslPort": 44304
+      "applicationUrl": "http://localhost:9701",
+      "sslPort": 44314
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "payment",
+      "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "PaymentGateway.API": {
+    "Bank.API": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "payment",
+      "applicationUrl": "https://localhost:9702;http://localhost:9701",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "https://localhost:7702;http://localhost:7701"
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/Payment",
-      "publishAllPorts": true,
-      "useSSL": true
+      }
     }
   }
 }
