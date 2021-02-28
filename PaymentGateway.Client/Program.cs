@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PaymentGateway.Client.Configuration;
+using PaymentGateway.Client.Models;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -34,13 +35,44 @@ namespace PaymentGateway.Client
             IServiceProvider provider = serviceScope.ServiceProvider;
             var paymentClient = provider.GetRequiredService<IPaymentGatewayClient>();
 
-            // Application code should start here.
+            // Get payment details for an id.
             var paymentId = Guid.NewGuid().ToString();
+            Console.WriteLine($"Getting payment details for id {paymentId}");
             var paymentSummary = await paymentClient.GetPaymentDetails(paymentId);
             Console.WriteLine($"Successfully Retrieved Payment for Id : {paymentId}");
             Console.WriteLine(JsonConvert.SerializeObject(paymentSummary, Formatting.Indented));
+
+            // Post payment request
+
+            Console.WriteLine($"Posting Payment request to be processed by the PaymentGatewayAPI");
+            var paymentRequest = GetPaymentRequest();
+            paymentSummary = await paymentClient.ProcessPayment(paymentRequest);
+            Console.WriteLine($"Successfully Processed Payment : ");
+            Console.WriteLine(JsonConvert.SerializeObject(paymentSummary, Formatting.Indented));
+
             Console.ReadLine();
         }
+
+        private static PaymentRequest GetPaymentRequest()
+        {
+            return new PaymentRequest
+            {
+                CardNumber = "1234-5678-9012-3456",
+                CardHolderName = "John Smith",
+                CardType = CardType.Master,
+                Cvv = 123,
+                Status = "Success",
+                Amount = 123,
+                ExpiryMonth = 9,
+                ExpiryYear = 2021,
+                Currency = "GBP",
+                Address1 = "Line 1",
+                City = "London",
+                Country = "UK",
+                PostCode = "EX17 1KB"
+            };
+        }
+
         public static async Task Main1(string[] args)
         {
             var client = new HttpClient();

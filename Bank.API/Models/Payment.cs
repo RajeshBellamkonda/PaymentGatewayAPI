@@ -23,7 +23,7 @@
         /// <summary>
         /// Tyep of the Card. Ex: Master, Visa, Amex.
         /// </summary>
-        public string CardType { get; set; }
+        public CardType CardType { get; set; }
 
         /// <summary>
         /// Name of the card holder.

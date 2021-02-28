@@ -28,7 +28,7 @@ namespace Bank.API.Controllers
                 Id = id,
                 CardNumber = "1234-5678-9012-3456",
                 CardHolderName = "John Smith",
-                CardType = "Master",
+                CardType = CardType.Master,
                 Cvv = 123,
                 Status = "Success",
                 Amount = 123,

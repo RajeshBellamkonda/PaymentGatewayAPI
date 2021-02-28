@@ -27,7 +27,7 @@ namespace PaymentGateway.ExternalAccess
 
         private HttpClient GetHttpClient()
         {
-            if (_token == null || _tokenExpiry == DateTime.MinValue || _tokenExpiry > DateTime.UtcNow)
+            if (_token == null || _tokenExpiry == DateTime.MinValue || _tokenExpiry < DateTime.UtcNow)
             {
                 _logger.LogDebug("Getting access token from the Bank");
                 //TODO: get token and return
