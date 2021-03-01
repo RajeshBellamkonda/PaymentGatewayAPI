@@ -21,8 +21,14 @@
 		Encryption - Card encryption,
 		Data Storage,
 		Suggestion : 
+		This is by no means a prod ready code but just a POC demonstrating the knowledge.
 		Payments Service can be made Event Driven to process payments offline...Gives scalability
 		Logging -  we can extend the logging to have traceIds etc to track through the system.
+		Validation - More detailed validation on the PaymentRequestVm
+		
+		https://github.com/IdentityServer/IdentityServer4/blob/main/samples/Quickstarts/1_ClientCredentials/src/Client/Program.cs
+		https://localhost:5001/.well-known/openid-configuration
+		https://nblumhardt.com/2019/10/serilog-in-aspnetcore-3/
 		
 		
-		TODOs: Add xml comments
+		

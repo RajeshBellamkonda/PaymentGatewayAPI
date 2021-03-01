@@ -18,12 +18,12 @@ namespace PaymentGateway.IntegrationTests.Mocks
             {
                 return default;
             }
-            return GetMockPayment(id);
+            return await Task.Run(() => GetMockPayment(id));
         }
 
         public async Task<Payment> ProcessPayment(Payment payment)
         {
-            return GetMockPayment(Guid.NewGuid().ToString());
+            return await Task.Run(() => GetMockPayment(Guid.NewGuid().ToString()));
         }
 
         private Payment GetMockPayment(string id)
