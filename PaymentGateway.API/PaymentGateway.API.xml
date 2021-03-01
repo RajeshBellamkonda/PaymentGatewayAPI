@@ -43,6 +43,11 @@
         <member name="P:PaymentGateway.API.Metrics.ServiceMetrics.HitCount">
             <inheritdoc/>
         </member>
+        <member name="T:PaymentGateway.API.StartupBase">
+            <summary>
+            Base Startup for use by API and test server hosing
+            </summary>
+        </member>
         <member name="T:PaymentGateway.API.ViewModels.PaymentRequestVm">
             <summary>
             Payment Request View Model
