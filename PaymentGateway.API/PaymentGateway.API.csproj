@@ -6,6 +6,10 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Git\PaymentGatewayAPI\PaymentGateway.API\PaymentGateway.API.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="App.Metrics" Version="4.1.0" />
     <PackageReference Include="App.Metrics.Abstractions" Version="4.1.0" />

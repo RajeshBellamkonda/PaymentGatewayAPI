@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PaymentGateway.API</name>
+    </assembly>
+    <members>
+        <member name="M:PaymentGateway.API.Controllers.PaymentController.Get(System.String)">
+            <summary>
+            Get Payment details for an id.
+            </summary>
+            <param name="id">unique id for the payment details.</param>
+            <returns>Payment Summary View Model.</returns>
+            <response code="401">Not Authorised.</response>
+            <response code="200">Returns payment summary for the requested id.</response>
+            <response code="404">If the payment details are not found.</response>    
+        </member>
+        <member name="M:PaymentGateway.API.Controllers.PaymentController.Post(PaymentGateway.API.ViewModels.PaymentRequestVm)">
+            <summary>
+            Processes the payment with the given details.
+            </summary>
+            <param name="paymentRequest">The payment details to be processed.</param>
+            <returns>Payment Summary View Model.</returns>
+            <response code="401">Not Authorised.</response>
+            <response code="200">Returns payment summary after processing the request.</response>
+            <response code="400">If the payment request is invalid.</response>    
+        </member>
+        <member name="P:PaymentGateway.API.Metrics.IServiceMetrics.ResponseTime">
+            <summary>
+            Used from Reponse tracking Middleware to track response times
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.Metrics.IServiceMetrics.HitCount">
+            <summary>
+            Used to track total number of times an endpoint has been hit
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.Metrics.ServiceMetrics.Metrics">
+            <inheritdoc/>
+        </member>
+        <member name="P:PaymentGateway.API.Metrics.ServiceMetrics.ResponseTime">
+            <inheritdoc/>
+        </member>
+        <member name="P:PaymentGateway.API.Metrics.ServiceMetrics.HitCount">
+            <inheritdoc/>
+        </member>
+        <member name="T:PaymentGateway.API.ViewModels.PaymentRequestVm">
+            <summary>
+            Payment Request View Model
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.CardType">
+            <summary>
+            Tyep of the Card. Ex: Master, Visa, Amex.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.CardNumber">
+            <summary>
+            16 digit card number. Expected Format : XXXX-XXXX-XXXX-XXXX
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.CardHolderName">
+            <summary>
+            Name of the card holder.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.Address1">
+            <summary>
+            1st Line of the Address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.Address2">
+            <summary>
+            2st Line of the Address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.City">
+            <summary>
+            City of the Address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.PostCode">
+            <summary>
+            Post Code of the address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.Country">
+            <summary>
+            Country of the card address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.ExpiryMonth">
+            <summary>
+            Month of Card Expiry.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.ExpiryYear">
+            <summary>
+            Year of Card Expiry.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.Amount">
+            <summary>
+            Payment Amount.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.Currency">
+            <summary>
+            Payment Currency.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.Cvv">
+            <summary>
+            Card Verification Value (CVV)
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentRequestVm.Status">
+            <summary>
+            Payment status.
+            </summary>
+        </member>
+        <member name="T:PaymentGateway.API.ViewModels.PaymentSummaryVm">
+            <summary>
+            Payment details View Model
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Id">
+            <summary>
+            Unique Identifier for the payment.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.MaskedCardNumber">
+            <summary>
+            Card number masked for security.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.CardType">
+            <summary>
+            Tyep of the Card. Ex: Master, Visa, Amex.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.CardHolderName">
+            <summary>
+            Name of the card holder.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Address1">
+            <summary>
+            1st Line of the Address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Address2">
+            <summary>
+            2st Line of the Address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.City">
+            <summary>
+            City of the Address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.PostCode">
+            <summary>
+            Post Code of the address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Country">
+            <summary>
+            Country of the card address.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.ExpiryMonth">
+            <summary>
+            Month of Card Expiry.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.ExpiryYear">
+            <summary>
+            Year of Card Expiry.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Amount">
+            <summary>
+            Payment Amount.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Currency">
+            <summary>
+            Payment Currency.
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Cvv">
+            <summary>
+            Card Verification Value (CVV)
+            </summary>
+        </member>
+        <member name="P:PaymentGateway.API.ViewModels.PaymentSummaryVm.Status">
+            <summary>
+            Payment status.
+            </summary>
+        </member>
+    </members>
+</doc>
