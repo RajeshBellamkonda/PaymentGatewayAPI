@@ -27,7 +27,6 @@ namespace PaymentGateway.IntegrationTests
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseAuthentication();
             base.Configure(app, env);
         }
     }

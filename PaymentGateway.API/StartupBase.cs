@@ -14,6 +14,9 @@ using System;
 
 namespace PaymentGateway.API
 {
+    /// <summary>
+    /// Base Startup for use by API and test server hosing
+    /// </summary>
     public class StartupBase
     {
         public StartupBase(IConfiguration configuration)
@@ -62,6 +65,7 @@ namespace PaymentGateway.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

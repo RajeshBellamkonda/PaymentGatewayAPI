@@ -45,9 +45,6 @@ namespace PaymentGateway.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            app.UseAuthentication();
-
             base.Configure(app, env);
         }
     }
