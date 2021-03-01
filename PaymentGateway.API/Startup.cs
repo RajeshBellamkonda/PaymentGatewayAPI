@@ -8,20 +8,27 @@ using PaymentGateway.API.Mappers;
 using PaymentGateway.Services;
 using PaymentGateway.Repositories;
 using PaymentGateway.ExternalAccess;
+using PaymentGateway.API.Metrics;
 
 namespace PaymentGateway.API
 {
-    public class Startup
+    public class Startup : StartupBase
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration) : base(configuration)
         {
-            Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            ConfigureAuthentication(services);
+            services.AddSingleton<IServiceMetrics, ServiceMetrics>();
+            services.AddSingleton<IBankClient, BankClient>();
+            base.ConfigureServices(services);
+        }
+
+        public virtual void ConfigureAuthentication(IServiceCollection services)
         {
             var authurl = Configuration.GetValue<string>("AuthenticationServerBaseUrl");
             services.AddAuthentication("Bearer")
@@ -33,44 +40,15 @@ namespace PaymentGateway.API
                         ValidateAudience = false
                     };
                 });
-
-            services.AddControllers();
-            services.AddSwaggerGen();
-            services.AddAutoMapper(typeof(PaymentGatewayAPIMapper));
-            services.AddTransient<IPaymentService, PaymentService>();
-            services.AddTransient<IPaymentRepository, PaymentRepository>();
-
-            var bankConfig = new BankConfiguration();
-            Configuration.GetSection(BankConfiguration.ConfigurationName).Bind(bankConfig);
-            services.AddSingleton<IBankConfiguration>(bankConfig);
-            services.AddSingleton<IBankClient, BankClient>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Payment Gateway API");
-            });
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            base.Configure(app, env);
         }
     }
 }

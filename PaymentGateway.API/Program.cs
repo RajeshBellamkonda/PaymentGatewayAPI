@@ -1,11 +1,9 @@
+using App.Metrics;
+using App.Metrics.AspNetCore;
+using App.Metrics.Formatters.Prometheus;
+using App.Metrics.Formatters;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PaymentGateway.API
 {
@@ -16,11 +14,25 @@ namespace PaymentGateway.API
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            IMetricsRoot metrics = AppMetrics.CreateDefaultBuilder()
+                .OutputMetrics.AsPrometheusPlainText()
+                .Build();
+
+            return Host.CreateDefaultBuilder(args)
+                 .ConfigureMetrics(metrics)
+                 .ConfigureAppMetricsHostingConfiguration(options => { options.MetricsEndpoint = "/metrics"; })
+                 .UseMetrics(
+                    options =>
+                    {
+                        options.EndpointOptions = endpointOptions =>
+                        {
+                            endpointOptions.MetricsEndpointOutputFormatter = metrics.OutputMetricsFormatters.GetType<MetricsPrometheusTextOutputFormatter>();
+                        };
+                    })  
+                 .ConfigureWebHostDefaults(webBuilder =>
+                 webBuilder.UseStartup<Startup>());
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace PaymentGateway.Client
         public static async Task Main(string[] args)
         {
             using IHost host = CreateHostBuilder(args).Build();
+            
             using IServiceScope serviceScope = host.Services.CreateScope();
             IServiceProvider provider = serviceScope.ServiceProvider;
             var paymentClient = provider.GetRequiredService<IPaymentGatewayClient>();
